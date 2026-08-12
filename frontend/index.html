@@ -4,53 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Pruebas Tango ERP - Flecha Log</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" integrity="sha512-wnea99cKBU3eXP3ftMBKorLPDETahXYfji33548ZXvfRaWayRJ2lEVSNOHMmsMYySBGskDqeBO18A8g4C28X8Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SheetJS para Exportar a Excel real (.xlsx) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans min-h-screen">
 
-    <!-- 1. LOGIN -->
-<!-- 1. PANTALLA DE LOGIN CON LOGO FLECHA LOG Y TARJETA CLARA -->
-<div id="loginView" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
-    <!-- Contenedor aclarado (bg-slate-100) para generar contraste con el logo y el fondo oscuro de la app -->
-    <div class="bg-slate-100 border border-slate-300 p-8 rounded-2xl shadow-2xl max-w-md w-full transition-all">
-        
-        <div class="text-center mb-8">
-            <!-- Logo de Flecha Log integrado -->
-<div class="inline-flex justify-center mb-4 p-4 bg-white rounded-2xl shadow-sm border border-slate-200 w-full max-w-[480px]">
-    <img src="img/flecha-log.png" id="logoEmpresa" alt="Flecha Log" class="h-20 w-auto object-contain">
-</div>
-            
-            <h1 class="text-2xl font-bold text-slate-800">Pruebas Tango ERP</h1>
-            <p class="text-slate-500 text-sm mt-1 font-medium">Control de Implementación y Módulos</p>
-        </div>
-
-        <form id="loginForm" class="space-y-5" autocomplete="off">
-            <div>
-                <label class="block text-xs font-bold uppercase text-slate-700 mb-1 tracking-wider">Correo Electrónico</label>
-                <input type="email" id="loginEmail" placeholder="ejemplo@flechalog.com" autocomplete="off" class="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 transition" required>
-            </div>
-
-            <div>
-                <label class="block text-xs font-bold uppercase text-slate-700 mb-1 tracking-wider">Contraseña</label>
-                <div class="relative">
-                    <input type="password" id="loginPassword" placeholder="Ingrese su contraseña" autocomplete="new-password" class="w-full bg-white border border-slate-300 rounded-lg pl-4 pr-10 py-2.5 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 transition" required>
-                    <button type="button" id="togglePasswordBtn" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-700 transition">
-                        <i id="togglePasswordIcon" class="fa-solid fa-eye"></i>
-                    </button>
+    <!-- 1. PANTALLA DE LOGIN -->
+    <div id="loginView" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
+        <div class="bg-slate-100 border border-slate-300 p-8 rounded-2xl shadow-2xl max-w-md w-full transition-all">
+            <div class="text-center mb-8">
+                <div class="inline-flex justify-center mb-4 p-4 bg-white rounded-2xl shadow-sm border border-slate-200 w-full max-w-[260px]">
+                    <img src="img/flecha-log.png" id="logoEmpresa" alt="Flecha Log" class="h-20 w-auto object-contain" onerror="this.src='https://i.ibb.co/3sX8Z3K/flecha-log-logo.png'">
                 </div>
+                <h1 class="text-2xl font-bold text-slate-800">Pruebas Tango ERP</h1>
+                <p class="text-slate-500 text-sm mt-1 font-medium">Control de Implementación y Módulos</p>
             </div>
 
-            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-lg shadow-blue-600/30 transition duration-200">
-                Iniciar Sesión
-            </button>
-        </form>
-        
-        <div id="loginError" class="mt-4 p-3 bg-red-50 border border-red-200 text-red-600 text-sm font-semibold rounded-lg text-center hidden"></div>
-    </div>
-</div>
+            <form id="loginForm" class="space-y-5" autocomplete="off">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1 tracking-wider">Correo Electrónico</label>
+                    <input type="email" id="loginEmail" placeholder="sistemas@flechalog.com" autocomplete="off" class="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 transition" required>
+                </div>
 
-    <!-- 2. DASHBOARD -->
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1 tracking-wider">Contraseña</label>
+                    <div class="relative">
+                        <input type="password" id="loginPassword" placeholder="Ingrese su contraseña" autocomplete="new-password" class="w-full bg-white border border-slate-300 rounded-lg pl-4 pr-10 py-2.5 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 transition" required>
+                        <button type="button" id="togglePasswordBtn" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-700 transition">
+                            <i id="togglePasswordIcon" class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-lg shadow-blue-600/30 transition duration-200">
+                    Iniciar Sesión
+                </button>
+            </form>
+            <div id="loginError" class="mt-4 p-3 bg-red-50 border border-red-200 text-red-600 text-sm font-semibold rounded-lg text-center hidden"></div>
+        </div>
+    </div>
+
+    <!-- 2. DASHBOARD PRINCIPAL -->
     <div id="dashboardView" class="hidden min-h-screen flex flex-col">
         <header class="bg-slate-800 border-b border-slate-700 px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
@@ -70,300 +68,267 @@
 
         <div class="flex-1 max-w-7xl w-full mx-auto p-6 space-y-6">
 
-            <!-- NOTIFICACIONES Y TAREAS ASIGNADAS PENDIENTES -->
-            <div class="bg-slate-800 border border-amber-500/40 rounded-2xl p-6 shadow-xl space-y-4">
-                <div class="flex justify-between items-center border-b border-slate-700 pb-3">
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-bell text-amber-400 text-xl animate-bounce"></i>
-                        <h2 class="font-bold text-lg text-white">Tareas Asignadas Pendientes</h2>
-                    </div>
-                    <span id="badgeTareasContador" class="bg-amber-500/20 text-amber-400 border border-amber-500/40 px-3 py-1 rounded-full text-xs font-bold">0 Pendientes</span>
-                </div>
-
-                <div id="contenedorNotificaciones" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="col-span-full text-center text-slate-500 py-2">Cargando notificaciones...</div>
-                </div>
+            <!-- NAVEGACIÓN PESTAÑAS (ADMIN / SISTEMAS) -->
+            <div id="adminTabsNav" class="hidden border-b border-slate-700 flex gap-4">
+                <button onclick="cambiarTab('tabOperaciones')" id="btnTabOperaciones" class="pb-3 border-b-2 border-blue-500 font-bold text-blue-400 text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-list-check"></i> Pruebas y Monitoreo
+                </button>
+                <button onclick="cambiarTab('tabUsuarios')" id="btnTabUsuarios" class="pb-3 border-b-2 border-transparent text-slate-400 hover:text-white font-bold text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-users-gear"></i> Gestión de Usuarios
+                </button>
+                <button onclick="cambiarTab('tabAuditoria')" id="btnTabAuditoria" class="pb-3 border-b-2 border-transparent text-slate-400 hover:text-white font-bold text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved"></i> Auditoría de Acciones
+                </button>
             </div>
 
-            <!-- PANEL ADMINISTRADOR (SOLO ADMIN) -->
-            <div id="adminPanel" class="hidden bg-slate-800 border border-blue-500/40 rounded-2xl p-6 shadow-xl space-y-4">
-                <div class="flex items-center gap-2 border-b border-slate-700 pb-3">
-                    <i class="fa-solid fa-user-shield text-blue-400 text-xl"></i>
-                    <h2 class="font-bold text-lg text-white">Panel de Administración de Usuarios y Módulos</h2>
+            <!-- PESTAÑA 1: PRUEBAS Y MONITOREO -->
+            <div id="tabOperaciones" class="space-y-6">
+                
+                <div id="adminPanel" class="hidden bg-slate-800 border border-blue-500/40 rounded-2xl p-6 shadow-xl space-y-4">
+                    <div class="flex items-center gap-2 border-b border-slate-700 pb-3">
+                        <i class="fa-solid fa-folder-plus text-emerald-400 text-xl"></i>
+                        <h2 class="font-bold text-lg text-white">Registrar Nuevo Módulo de Tango ERP</h2>
+                    </div>
+                    <form id="formCrearModulo" class="flex gap-4">
+                        <input type="text" id="newModuloNombre" placeholder="Ej: Importaciones / Compras" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white" required>
+                        <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-2.5 rounded-lg text-sm transition">Crear Módulo</button>
+                    </form>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <form id="formCrearUsuario" class="bg-slate-900/60 p-4 rounded-xl border border-slate-700 space-y-3">
-                        <h3 class="font-semibold text-sm text-blue-400"><i class="fa-solid fa-user-plus mr-1"></i> Registrar Nuevo Usuario</h3>
-                        <input type="text" id="newUserNombre" placeholder="Nombre Completo" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white" required>
-                        <input type="email" id="newUserEmail" placeholder="Correo Electrónico" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white" required>
-                        <div class="grid grid-cols-2 gap-2">
-                            <input type="password" id="newUserPassword" placeholder="Contraseña" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white" required>
-                            <select id="newUserRol" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white">
-                                <option value="COLABORADOR">Colaborador</option>
-                                <option value="ADMIN">Administrador</option>
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl space-y-4">
+                    <h2 class="font-bold text-lg text-white flex items-center gap-2">
+                        <i class="fa-solid fa-pen-to-square text-blue-400"></i> Registrar / Asignar Tarea de Prueba
+                    </h2>
+                    
+                    <form id="pruebaForm" class="grid grid-cols-1 md:grid-cols-3 gap-4" enctype="multipart/form-data">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Módulo de Tango</label>
+                            <select id="selectModulo" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white" required>
+                                <option value="">Seleccione Módulo...</option>
                             </select>
                         </div>
-                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 rounded-lg text-sm transition">Crear Usuario</button>
-                    </form>
 
-                    <form id="formCrearModulo" class="bg-slate-900/60 p-4 rounded-xl border border-slate-700 space-y-3">
-                        <h3 class="font-semibold text-sm text-emerald-400"><i class="fa-solid fa-folder-plus mr-1"></i> Registrar Nuevo Módulo</h3>
-                        <input type="text" id="newModuloNombre" placeholder="Ej: Recursos Humanos" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white" required>
-                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2 rounded-lg text-sm transition">Crear Módulo</button>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Proceso / Tarea Específica</label>
+                            <input type="text" id="inputProcesoNombre" placeholder="Ej: Alta de Clientes" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Asignar Responsable</label>
+                            <select id="selectResponsable" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white" required>
+                                <option value="">Cargando colaboradores...</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Fecha de Inicio</label>
+                            <input type="date" id="fechaInicio" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Fecha de Fin (Opcional)</label>
+                            <input type="date" id="fechaFin" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Fase</label>
+                            <select id="fase" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white">
+                                <option value="Prueba">Prueba</option>
+                                <option value="Implementación">Implementación</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Resultado Inicial</label>
+                            <select id="resultadoEstado" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white">
+                                <option value="Fallido">En curso / Con Observaciones</option>
+                                <option value="Aprobado">Aprobado / Finalizado</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Enviado A (Opcional)</label>
+                            <input type="text" id="enviadoA" placeholder="Ej: Soporte Tango" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Adjuntar Captura / PDF</label>
+                            <input type="file" id="archivoEvidencia" accept="image/*,.pdf" class="w-full text-xs text-slate-400 bg-slate-900 border border-slate-700 rounded-lg p-2">
+                        </div>
+
+                        <div class="md:col-span-3">
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Observación / Detalle del Error</label>
+                            <textarea id="observacion" rows="2" placeholder="Describa el fallo detectado..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white"></textarea>
+                        </div>
+
+                        <div class="md:col-span-3">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-2.5 rounded-lg shadow-lg transition">
+                                Guardar / Asignar Tarea
+                            </button>
+                        </div>
                     </form>
                 </div>
+
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl space-y-4">
+                    <div class="flex flex-col md:flex-row justify-between md:items-center gap-4">
+                        <h2 class="font-bold text-lg text-white flex items-center gap-2">
+                            <i class="fa-solid fa-table-list text-blue-400"></i> Monitoreo de Tareas
+                        </h2>
+                        <div class="flex gap-2">
+                            <button onclick="exportarExcel()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2">
+                                <i class="fa-solid fa-file-excel text-sm"></i> Exportar a Excel
+                            </button>
+                            <button id="btnRefresh" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition">
+                                <i class="fa-solid fa-rotate-right mr-1"></i> Actualizar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-900/50 p-4 rounded-xl border border-slate-700/50">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Filtrar por Módulo</label>
+                            <select id="filtroModulo" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white" onchange="cargarHistorico()">
+                                <option value="TODOS">Todos los Módulos</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Filtrar por Estado</label>
+                            <select id="filtroEstado" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white" onchange="cargarHistorico()">
+                                <option value="TODOS">Todos los Estados</option>
+                                <option value="En curso">En curso / Re-prueba</option>
+                                <option value="Finalizado">Finalizado / Aprobado</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Filtrar por Responsable</label>
+                            <select id="filtroResponsable" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white" onchange="cargarHistorico()">
+                                <option value="TODOS">Todos los Responsables</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table id="tablaMonitoreoExport" class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-700 text-slate-400 text-xs uppercase tracking-wider">
+                                    <th class="p-3">Proceso</th>
+                                    <th class="p-3">Módulo</th>
+                                    <th class="p-3">Responsable</th>
+                                    <th class="p-3">Asignado Por</th>
+                                    <th class="p-3">Fechas (Inicio / Fin)</th>
+                                    <th class="p-3">Estado</th>
+                                    <th class="p-3">Intento Actual</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaGantt" class="divide-y divide-slate-700/50 text-sm text-slate-200">
+                                <tr><td colspan="7" class="p-4 text-center text-slate-500">Cargando datos...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
 
-            <!-- REGISTRO DE PRUEBAS -->
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl space-y-4">
-                <h2 class="font-bold text-lg text-white flex items-center gap-2">
-                    <i class="fa-solid fa-pen-to-square text-blue-400"></i> Registrar / Asignar Tarea de Prueba
-                </h2>
+            <!-- PESTAÑA 2: GESTIÓN DE USUARIOS -->
+            <div id="tabUsuarios" class="hidden space-y-6">
                 
-                <form id="pruebaForm" class="grid grid-cols-1 md:grid-cols-3 gap-4" enctype="multipart/form-data">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Módulo de Tango</label>
-                        <select id="selectModulo" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white" required>
-                            <option value="">Seleccione Módulo...</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Proceso / Tarea Específica</label>
-                        <input type="text" id="inputProcesoNombre" placeholder="Ej: Alta de Clientes" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white" required>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Asignar Responsable</label>
-                        <select id="selectResponsable" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white" required>
-                            <option value="">Cargando colaboradores...</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Fecha de Inicio</label>
-                        <input type="date" id="fechaInicio" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white" required>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Fecha de Fin (Opcional)</label>
-                        <input type="date" id="fechaFin" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Fase</label>
-                        <select id="fase" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white">
-                            <option value="Prueba">Prueba</option>
-                            <option value="Implementación">Implementación</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Resultado Inicial</label>
-                        <select id="resultadoEstado" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white">
-                            <option value="Fallido">En curso / Con Observaciones</option>
-                            <option value="Aprobado">Aprobado / Finalizado</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Enviado A (Opcional)</label>
-                        <input type="text" id="enviadoA" placeholder="Ej: Soporte Tango" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Adjuntar Captura / PDF</label>
-                        <input type="file" id="archivoEvidencia" accept="image/*,.pdf" class="w-full text-xs text-slate-400 bg-slate-900 border border-slate-700 rounded-lg p-2">
-                    </div>
-
-                    <div class="md:col-span-3">
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Observación / Detalle del Error</label>
-                        <textarea id="observacion" rows="2" placeholder="Describa el fallo detectado..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white"></textarea>
-                    </div>
-
-                    <div class="md:col-span-3">
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Devolución / Solución de Soporte Tango (Si aplica)</label>
-                        <textarea id="devolucionTango" rows="2" placeholder="Respuesta enviada por Soporte Tango..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white"></textarea>
-                    </div>
-
-                    <div class="md:col-span-3">
-                        <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-2.5 rounded-lg shadow-lg transition">
-                            Guardar / Asignar Tarea
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- TABLA DE MONITOREO DE TAREAS -->
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl space-y-4">
-                <div class="flex flex-col md:flex-row justify-between md:items-center gap-4">
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl space-y-4">
                     <h2 class="font-bold text-lg text-white flex items-center gap-2">
-                        <i class="fa-solid fa-table-list text-blue-400"></i> Monitoreo de Tareas
+                        <i class="fa-solid fa-user-plus text-blue-400"></i> Registrar Nuevo Usuario
                     </h2>
-                    <button id="btnRefresh" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition">
-                        <i class="fa-solid fa-rotate-right mr-1"></i> Actualizar
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-900/50 p-4 rounded-xl border border-slate-700/50">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-400 mb-1">Filtrar por Módulo</label>
-                        <select id="filtroModulo" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white" onchange="cargarHistorico()">
-                            <option value="TODOS">Todos los Módulos</option>
+                    <form id="formCrearUsuario" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <input type="text" id="newUserNombre" placeholder="Nombre Completo" class="bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white" required>
+                        <input type="email" id="newUserEmail" placeholder="sistemas@flechalog.com" class="bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white" required>
+                        <input type="password" id="newUserPassword" placeholder="Contraseña Inicial" class="bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white" required>
+                        <select id="newUserRol" class="bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white">
+                            <option value="COLABORADOR">Colaborador</option>
+                            <option value="ADMIN">Administrador (Sistemas)</option>
                         </select>
+                        <button type="submit" class="md:col-span-4 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-lg text-sm transition">
+                            Crear Usuario Inmediatamente
+                        </button>
+                    </form>
+                </div>
+
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl space-y-4">
+                    <h2 class="font-bold text-lg text-white flex items-center gap-2">
+                        <i class="fa-solid fa-users text-blue-400"></i> Lista de Usuarios Registrados en la Plataforma
+                    </h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-700 text-slate-400 text-xs uppercase">
+                                    <th class="p-3">ID</th>
+                                    <th class="p-3">Nombre</th>
+                                    <th class="p-3">Email</th>
+                                    <th class="p-3">Rol</th>
+                                    <th class="p-3">Acciones de Seguridad</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaUsuariosAdmin" class="divide-y divide-slate-700 text-sm">
+                                <tr><td colspan="5" class="p-4 text-center text-slate-500">Cargando usuarios...</td></tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-400 mb-1">Filtrar por Estado</label>
-                        <select id="filtroEstado" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white" onchange="cargarHistorico()">
-                            <option value="TODOS">Todos los Estados</option>
-                            <option value="En curso">En curso / Re-prueba</option>
-                            <option value="Finalizado">Finalizado / Aprobado</option>
-                        </select>
+                </div>
+
+            </div>
+
+            <!-- PESTAÑA 3: AUDITORÍA -->
+            <div id="tabAuditoria" class="hidden space-y-6">
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl space-y-4">
+                    <h2 class="font-bold text-lg text-white flex items-center gap-2">
+                        <i class="fa-solid fa-clock-rotate-left text-amber-400"></i> Bitácora de Auditoría (Acciones del Sistema)
+                    </h2>
+                    <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="sticky top-0 bg-slate-800">
+                                <tr class="border-b border-slate-700 text-slate-400 text-xs uppercase">
+                                    <th class="p-3">Fecha y Hora</th>
+                                    <th class="p-3">Usuario</th>
+                                    <th class="p-3">Acción</th>
+                                    <th class="p-3">Detalle</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaAuditoria" class="divide-y divide-slate-700 text-xs">
+                                <tr><td colspan="4" class="p-4 text-center text-slate-500">Cargando logs...</td></tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-400 mb-1">Filtrar por Responsable</label>
-                        <select id="filtroResponsable" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white" onchange="cargarHistorico()">
-                            <option value="TODOS">Todos los Responsables</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="border-b border-slate-700 text-slate-400 text-xs uppercase tracking-wider">
-                                <th class="p-3">Proceso</th>
-                                <th class="p-3">Módulo</th>
-                                <th class="p-3">Responsable</th>
-                                <th class="p-3">Asignado Por</th>
-                                <th class="p-3">Fechas (Inicio / Fin)</th>
-                                <th class="p-3">Estado</th>
-                                <th class="p-3">Intento Actual</th>
-                                <th class="p-3">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tablaGantt" class="divide-y divide-slate-700/50 text-sm text-slate-200">
-                            <tr><td colspan="8" class="p-4 text-center text-slate-500">Cargando datos...</td></tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
 
-        </div>
-    </div>
-
-    <!-- MODAL TOMAR Y COMPLETAR TAREA (CON SOPORTE PARA ADJUNTAR EVIDENCIA) -->
-    <div id="modalTomarTarea" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 max-w-xl w-full space-y-4 shadow-2xl">
-            <div class="flex justify-between items-center border-b border-slate-700 pb-3">
-                <h3 class="font-bold text-lg text-white" id="modalTomarTitle">Completar Tarea Asignada</h3>
-                <button onclick="cerrarModalTomar()" class="text-slate-400 hover:text-white text-xl">&times;</button>
-            </div>
-            
-            <form id="formCompletarTarea" class="space-y-4" enctype="multipart/form-data">
-                <input type="hidden" id="modalEjecucionId">
-                
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Resultado de la Prueba</label>
-                    <select id="modalResultadoEstado" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white">
-                        <option value="Aprobado">Aprobado / Finalizado</option>
-                        <option value="Fallido">Con Error / Requiere Re-prueba</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Fecha de Fin Real</label>
-                    <input type="date" id="modalFechaFin" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white">
-                </div>
-
-                <!-- CAMPO ADJUNTO EN EL MODAL DE NOTIFICACIÓN -->
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Adjuntar Captura / Evidencia del Resultado</label>
-                    <input type="file" id="modalArchivoEvidencia" accept="image/*,.pdf" class="w-full text-xs text-slate-400 bg-slate-900 border border-slate-700 rounded-lg p-2">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Observaciones / Hallazgos</label>
-                    <textarea id="modalObservacion" rows="3" placeholder="Detalle las pruebas ejecutadas..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white"></textarea>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Devolución de Soporte Tango (Si aplica)</label>
-                    <textarea id="modalDevolucion" rows="2" placeholder="Respuesta enviada por Soporte Tango..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white"></textarea>
-                </div>
-
-                <div class="flex justify-end gap-3 pt-2 border-t border-slate-700">
-                    <button type="button" onclick="cerrarModalTomar()" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-sm font-semibold">Cancelar</button>
-                    <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-5 py-2 rounded-lg text-sm shadow-lg transition">
-                        Finalizar y Guardar en Historial
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL HISTORIAL DE REINTENTOS -->
-    <div id="modalHistorial" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 max-w-2xl w-full space-y-4 shadow-2xl">
-            <div class="flex justify-between items-center border-b border-slate-700 pb-3">
-                <h3 class="font-bold text-lg text-white" id="modalTitle">Histórico de Iteraciones</h3>
-                <button onclick="cerrarModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
-            </div>
-            <div id="modalContent" class="space-y-3 max-h-96 overflow-y-auto pr-2"></div>
-            <div class="text-right pt-2 border-t border-slate-700">
-                <button onclick="cerrarModal()" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-sm font-semibold">Cerrar</button>
-            </div>
         </div>
     </div>
 
     <script>
-        const API_URL = "https://tango-backend-flechalog.onrender.com";
+        const API_URL = "https://pruebas-tango-cpz2.onrender.com"; 
         let currentUser = null;
+        let datosMonitoreoGlobal = [];
 
         document.getElementById('fechaInicio').valueAsDate = new Date();
-        document.getElementById('modalFechaFin').valueAsDate = new Date();
 
-        // Revelar contraseña
-        const togglePasswordBtn = document.getElementById('togglePasswordBtn');
-        const loginPasswordInput = document.getElementById('loginPassword');
-        const togglePasswordIcon = document.getElementById('togglePasswordIcon');
+        function cambiarTab(tabId) {
+            ['tabOperaciones', 'tabUsuarios', 'tabAuditoria'].forEach(t => {
+                document.getElementById(t).classList.add('hidden');
+            });
+            document.getElementById(tabId).classList.remove('hidden');
 
-        togglePasswordBtn.addEventListener('click', () => {
-            const isPassword = loginPasswordInput.type === 'password';
-            loginPasswordInput.type = isPassword ? 'text' : 'password';
-            togglePasswordIcon.classList.toggle('fa-eye', !isPassword);
-            togglePasswordIcon.classList.toggle('fa-eye-slash', isPassword);
-        });
+            ['btnTabOperaciones', 'btnTabUsuarios', 'btnTabAuditoria'].forEach(b => {
+                const btn = document.getElementById(b);
+                btn.classList.remove('border-blue-500', 'text-blue-400');
+                btn.classList.add('border-transparent', 'text-slate-400');
+            });
 
-        // PERSISTENCIA DE SESIÓN
-        window.addEventListener('DOMContentLoaded', () => {
-            const sessionData = localStorage.getItem('tango_user_session');
-            if (sessionData) {
-                try {
-                    currentUser = JSON.parse(sessionData);
-                    iniciarDashboard();
-                } catch (e) {
-                    localStorage.removeItem('tango_user_session');
-                }
+            if(tabId === 'tabOperaciones') {
+                document.getElementById('btnTabOperaciones').classList.add('border-blue-500', 'text-blue-400');
+            } else if(tabId === 'tabUsuarios') {
+                document.getElementById('btnTabUsuarios').classList.add('border-blue-500', 'text-blue-400');
+                cargarTablaUsuarios();
+            } else if(tabId === 'tabAuditoria') {
+                document.getElementById('btnTabAuditoria').classList.add('border-blue-500', 'text-blue-400');
+                cargarTablaAuditoria();
             }
-        });
-
-        async function iniciarDashboard() {
-            document.getElementById('loginView').classList.add('hidden');
-            document.getElementById('dashboardView').classList.remove('hidden');
-            document.getElementById('userDisplayName').innerText = currentUser.nombre_completo;
-            document.getElementById('userDisplayRole').innerText = currentUser.rol;
-
-            if (currentUser.rol === 'ADMIN') {
-                document.getElementById('adminPanel').classList.remove('hidden');
-            } else {
-                document.getElementById('adminPanel').classList.add('hidden');
-            }
-
-            await inicializarCatalogos();
-            await cargarNotificacionesPendientes();
-            await cargarHistorico();
         }
 
         // LOGIN
@@ -393,47 +358,31 @@
                     errorDiv.classList.remove('hidden');
                 }
             } catch (err) {
-                console.error("Error de red:", err);
-                errorDiv.innerText = "No se pudo conectar con el servidor backend. Verifique que uvicorn esté activo.";
+                errorDiv.innerText = "No se pudo conectar con el servidor backend. Verifique la conexión o aguarde unos segundos.";
                 errorDiv.classList.remove('hidden');
             }
         });
 
-        // CREAR MÓDULO
-        document.getElementById('formCrearModulo').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const modNombre = document.getElementById('newModuloNombre').value.trim();
-            if (!modNombre) return;
+        async function iniciarDashboard() {
+            document.getElementById('loginView').classList.add('hidden');
+            document.getElementById('dashboardView').classList.remove('hidden');
+            document.getElementById('userDisplayName').innerText = currentUser.nombre_completo;
+            document.getElementById('userDisplayRole').innerText = currentUser.rol;
 
-            try {
-                const res = await fetch(`${API_URL}/admin/modulos`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${currentUser.access_token}`
-                    },
-                    body: JSON.stringify({ nombre: modNombre })
-                });
-
-                if (res.ok) {
-                    alert(`¡Módulo '${modNombre}' creado exitosamente!`);
-                    document.getElementById('newModuloNombre').value = '';
-                    await inicializarCatalogos();
-                } else {
-                    const errData = await res.json();
-                    alert(`Error: ${errData.detail || "No se pudo crear el módulo"}`);
-                }
-            } catch (err) {
-                alert("Error de conexión al guardar módulo");
+            if (currentUser.rol === 'ADMIN') {
+                document.getElementById('adminTabsNav').classList.remove('hidden');
+                document.getElementById('adminPanel').classList.remove('hidden');
             }
-        });
 
-        // CREAR USUARIO (ADMIN)
+            await inicializarCatalogos();
+            await cargarHistorico();
+        }
+
         document.getElementById('formCrearUsuario').addEventListener('submit', async (e) => {
             e.preventDefault();
             const payload = {
-                nombre_completo: document.getElementById('newUserNombre').value,
-                email: document.getElementById('newUserEmail').value,
+                nombre_completo: document.getElementById('newUserNombre').value.trim(),
+                email: document.getElementById('newUserEmail').value.trim().toLowerCase(),
                 password: document.getElementById('newUserPassword').value,
                 rol: document.getElementById('newUserRol').value
             };
@@ -448,139 +397,127 @@
             });
 
             if (res.ok) {
-                alert("¡Usuario registrado con éxito!");
+                alert(`¡Usuario '${payload.nombre_completo}' creado exitosamente!`);
                 document.getElementById('formCrearUsuario').reset();
                 await inicializarCatalogos();
+                await cargarTablaUsuarios();
             } else {
                 const err = await res.json();
                 alert(`Error: ${err.detail}`);
             }
         });
 
-        // CARGAR NOTIFICACIONES CON BOTÓN Y QUIÉN ASIGNÓ
-        async function cargarNotificacionesPendientes() {
-            if (!currentUser) return;
-            try {
-                const res = await fetch(`${API_URL}/tareas/mis-pendientes`, {
-                    headers: { 'Authorization': `Bearer ${currentUser.access_token}` }
-                });
-                const tareas = await res.json();
+        async function cargarTablaUsuarios() {
+            const res = await fetch(`${API_URL}/admin/usuarios/todos`, {
+                headers: { 'Authorization': `Bearer ${currentUser.access_token}` }
+            });
+            const users = await res.json();
+            const tbody = document.getElementById('tablaUsuariosAdmin');
+            tbody.innerHTML = "";
 
-                const contenedor = document.getElementById('contenedorNotificaciones');
-                const contadorBadge = document.getElementById('badgeTareasContador');
-                contenedor.innerHTML = "";
-                contadorBadge.innerText = `${tareas.length} Pendientes`;
-
-                if (tareas.length === 0) {
-                    contenedor.innerHTML = `<div class="col-span-full text-center text-slate-500 py-2">No tienes tareas pendientes asignadas.</div>`;
-                    return;
-                }
-
-                tareas.forEach(t => {
-                    contenedor.innerHTML += `
-                        <div class="bg-slate-900/80 border border-slate-700 p-4 rounded-xl flex flex-col justify-between space-y-3 shadow-lg">
-                            <div>
-                                <div class="flex justify-between items-start">
-                                    <span class="text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">${t.sector}</span>
-                                    <span class="text-xs text-slate-400">Intento #${t.intento_actual}</span>
-                                </div>
-                                <h4 class="font-semibold text-white text-sm mt-2">${t.proceso_nombre}</h4>
-                                <p class="text-xs text-blue-400 mt-1"><i class="fa-solid fa-user-gear text-xs mr-1"></i>Asignado por: <strong>${t.asignado_por}</strong></p>
-                                <p class="text-xs text-slate-400 mt-0.5"><i class="fa-regular fa-calendar text-xs mr-1"></i>Inicio: ${t.fecha_inicio}</p>
-                            </div>
-                            <button onclick="abrirModalTomar(${t.ejecucion_id}, '${t.proceso_nombre}')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2 rounded-lg text-xs shadow transition flex items-center justify-center gap-1.5">
-                                <i class="fa-solid fa-file-signature"></i> Tomar y Completar Tarea
+            users.forEach(u => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-3 text-slate-400">#${u.id}</td>
+                        <td class="p-3 font-semibold text-white">${u.nombre_completo}</td>
+                        <td class="p-3 text-blue-400">${u.email}</td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded text-xs font-bold ${u.rol === 'ADMIN' ? 'bg-indigo-500/20 text-indigo-300' : 'bg-slate-700 text-slate-300'}">${u.rol}</span></td>
+                        <td class="p-3 flex gap-2">
+                            <button onclick="blanquearPassword(${u.id}, '${u.email}')" class="bg-amber-600/20 hover:bg-amber-600/40 text-amber-300 border border-amber-500/30 px-3 py-1 rounded text-xs font-semibold">
+                                <i class="fa-solid fa-key"></i> Blanquear Password
                             </button>
-                        </div>
-                    `;
-                });
-            } catch (e) {
-                console.error("Error al cargar notificaciones:", e);
-            }
+                            <button onclick="eliminarUsuario(${u.id}, '${u.email}')" class="bg-red-600/20 hover:bg-red-600/40 text-red-300 border border-red-500/30 px-3 py-1 rounded text-xs font-semibold">
+                                <i class="fa-solid fa-trash"></i> Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
         }
 
-        function abrirModalTomar(ejecucionId, procesoNombre) {
-            document.getElementById('modalEjecucionId').value = ejecucionId;
-            document.getElementById('modalTomarTitle').innerText = `Completar Tarea: ${procesoNombre}`;
-            document.getElementById('modalTomarTarea').classList.remove('hidden');
-        }
+        async function blanquearPassword(userId, email) {
+            const nueva = prompt(`Ingrese la NUEVA contraseña para ${email}:`);
+            if(!nueva) return;
 
-        function cerrarModalTomar() {
-            document.getElementById('modalTomarTarea').classList.add('hidden');
-            document.getElementById('formCompletarTarea').reset();
-        }
-
-        // ENVIAR COMPLETADO DE TAREA CON SOPORTE PARA ADJUNTAR ARCHIVO (MULTIPART)
-        document.getElementById('formCompletarTarea').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const ejecucionId = document.getElementById('modalEjecucionId').value;
-
-            const formData = new FormData();
-            formData.append('resultado_estado', document.getElementById('modalResultadoEstado').value);
-            if (document.getElementById('modalFechaFin').value) formData.append('fecha_fin', document.getElementById('modalFechaFin').value);
-            if (document.getElementById('modalObservacion').value.trim()) formData.append('observacion_error', document.getElementById('modalObservacion').value.trim());
-            if (document.getElementById('modalDevolucion').value.trim()) formData.append('devolucion_tango', document.getElementById('modalDevolucion').value.trim());
-
-            const fileInput = document.getElementById('modalArchivoEvidencia');
-            if (fileInput.files.length > 0) formData.append('archivo_evidencia', fileInput.files[0]);
-
-            const res = await fetch(`${API_URL}/pruebas/${ejecucionId}/tomar-completar`, {
+            const res = await fetch(`${API_URL}/admin/usuarios/${userId}/reset-password`, {
                 method: 'POST',
-                headers: { 'Authorization': `Bearer ${currentUser.access_token}` },
-                body: formData
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${currentUser.access_token}`
+                },
+                body: JSON.stringify({ nueva_password: nueva })
             });
 
-            if (res.ok) {
-                alert("¡Tarea completada e incorporada al historial exitosamente!");
-                cerrarModalTomar();
-                await cargarNotificacionesPendientes();
-                await cargarHistorico();
+            if(res.ok) {
+                alert(`Contraseña actualizada con éxito para ${email}`);
             } else {
-                alert("Error al completar la tarea");
+                alert("Error al actualizar contraseña");
             }
-        });
+        }
 
-        // REGISTRAR PRUEBA
-        document.getElementById('pruebaForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const selMod = document.getElementById('selectModulo');
-            const modId = parseInt(selMod.value);
-            const sectorNom = selMod.options[selMod.selectedIndex].getAttribute('data-nombre');
+        async function eliminarUsuario(userId, email) {
+            if(!confirm(`¿Está seguro de eliminar permanentemente al usuario ${email}?`)) return;
 
-            const formData = new FormData();
-            formData.append('modulo_id', modId);
-            formData.append('sector_nombre', sectorNom);
-            formData.append('proceso_nombre', document.getElementById('inputProcesoNombre').value);
-            formData.append('empleado_asignado_id', document.getElementById('selectResponsable').value);
-            formData.append('fase', document.getElementById('fase').value);
-            formData.append('resultado_estado', document.getElementById('resultadoEstado').value);
-            formData.append('fecha_inicio', document.getElementById('fechaInicio').value);
-            if (document.getElementById('fechaFin').value) formData.append('fecha_fin', document.getElementById('fechaFin').value);
-            if (document.getElementById('observacion').value) formData.append('observacion_error', document.getElementById('observacion').value);
-            if (document.getElementById('enviadoA').value) formData.append('enviado_a', document.getElementById('enviadoA').value);
-            if (document.getElementById('devolucionTango').value) formData.append('devolucion_tango', document.getElementById('devolucionTango').value);
-
-            const fileInput = document.getElementById('archivoEvidencia');
-            if (fileInput.files.length > 0) formData.append('archivo_evidencia', fileInput.files[0]);
-
-            const res = await fetch(`${API_URL}/pruebas/registrar-form`, {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${currentUser.access_token}` },
-                body: formData
+            const res = await fetch(`${API_URL}/admin/usuarios/${userId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${currentUser.access_token}` }
             });
 
-            if (res.ok) {
-                alert("¡Tarea registrada y notificada con éxito!");
-                document.getElementById('pruebaForm').reset();
-                document.getElementById('fechaInicio').valueAsDate = new Date();
-                await cargarNotificacionesPendientes();
-                await cargarHistorico();
+            if(res.ok) {
+                alert("Usuario eliminado correctamente");
+                await cargarTablaUsuarios();
+                await inicializarCatalogos();
             } else {
-                alert("Error al registrar la prueba");
+                const err = await res.json();
+                alert(`Error: ${err.detail}`);
             }
-        });
+        }
 
-        // CARGAR HISTÓRICO
+        async function cargarTablaAuditoria() {
+            const res = await fetch(`${API_URL}/admin/auditoria`, {
+                headers: { 'Authorization': `Bearer ${currentUser.access_token}` }
+            });
+            const logs = await res.json();
+            const tbody = document.getElementById('tablaAuditoria');
+            tbody.innerHTML = "";
+
+            logs.forEach(l => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-3 text-slate-400 font-mono">${l.fecha}</td>
+                        <td class="p-3 font-semibold text-blue-300">${l.usuario}</td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded text-xs font-bold bg-slate-700 text-amber-400">${l.accion}</span></td>
+                        <td class="p-3 text-slate-300">${l.detalle}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function exportarExcel() {
+            if(datosMonitoreoGlobal.length === 0) {
+                alert("No hay datos para exportar");
+                return;
+            }
+
+            const dataFormatted = datosMonitoreoGlobal.map(item => ({
+                "ID Tarea": item.id,
+                "Proceso / Test": item.proceso,
+                "Módulo Tango": item.sector,
+                "Responsable Asignado": item.asignado_a,
+                "Asignado Por": item.asignado_por,
+                "Fecha Inicio": item.fecha_inicio,
+                "Fecha Fin": item.fecha_fin,
+                "Estado Actual": item.estado,
+                "Nro Intento": item.intento_actual
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(dataFormatted);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Monitoreo Tango ERP");
+            
+            XLSX.writeFile(workbook, `Reporte_Pruebas_Tango_${new Date().toISOString().slice(0,10)}.xlsx`);
+        }
+
         async function cargarHistorico() {
             if (!currentUser) return;
             const sector = document.getElementById('filtroModulo').value;
@@ -593,21 +530,21 @@
             const res = await fetch(url, {
                 headers: { 'Authorization': `Bearer ${currentUser.access_token}` }
             });
-            const data = await res.json();
+            datosMonitoreoGlobal = await res.json();
             
             const tbody = document.getElementById('tablaGantt');
             tbody.innerHTML = "";
 
-            if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-500">No hay registros con los filtros aplicados.</td></tr>`;
+            if (datosMonitoreoGlobal.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500">No hay registros con los filtros aplicados.</td></tr>`;
             } else {
-                data.forEach(item => {
+                datosMonitoreoGlobal.forEach(item => {
                     tbody.innerHTML += `
                         <tr class="hover:bg-slate-700/30 transition">
                             <td class="p-3 font-medium text-white">${item.proceso}</td>
                             <td class="p-3">${item.sector}</td>
-                            <td class="p-3 text-slate-300"><i class="fa-solid fa-user text-xs text-blue-400 mr-1"></i>${item.asignado_a}</td>
-                            <td class="p-3 text-slate-400 text-xs"><i class="fa-solid fa-user-gear text-xs text-emerald-400 mr-1"></i>${item.asignado_por}</td>
+                            <td class="p-3 text-slate-300">${item.asignado_a}</td>
+                            <td class="p-3 text-slate-400 text-xs">${item.asignado_por}</td>
                             <td class="p-3 text-xs text-slate-400">${item.fecha_inicio} / ${item.fecha_fin}</td>
                             <td class="p-3">
                                 <span class="px-2.5 py-1 text-xs rounded-full font-semibold ${item.estado === 'Finalizado' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30' : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'}">
@@ -615,53 +552,10 @@
                                 </span>
                             </td>
                             <td class="p-3 font-bold text-blue-400">Intento #${item.intento_actual}</td>
-                            <td class="p-3">
-                                <button onclick="verDetalleHistorial(${item.id}, '${item.proceso}')" class="bg-blue-600/20 hover:bg-blue-600/40 text-blue-300 border border-blue-500/30 px-3 py-1 rounded-lg text-xs font-semibold transition flex items-center gap-1">
-                                    <i class="fa-solid fa-clock-rotate-left"></i> Versiones
-                                </button>
-                            </td>
                         </tr>
                     `;
                 });
             }
-        }
-
-        // HISTORIAL CON ADJUNTOS
-        async function verDetalleHistorial(ejecucionId, nombreProceso) {
-            const res = await fetch(`${API_URL}/pruebas/${ejecucionId}/historial`, {
-                headers: { 'Authorization': `Bearer ${currentUser.access_token}` }
-            });
-            const historial = await res.json();
-
-            document.getElementById('modalTitle').innerText = `Histórico de Reintentos: ${nombreProceso}`;
-            const container = document.getElementById('modalContent');
-            container.innerHTML = "";
-
-            historial.forEach(h => {
-                let adjuntosHtml = "";
-                if (h.adjuntos && h.adjuntos.length > 0) {
-                    adjuntosHtml = `<div class="mt-2 pt-2 border-t border-slate-800"><strong class="text-xs text-slate-400 block mb-1">Evidencia Adjunta:</strong>`;
-                    h.adjuntos.forEach(a => {
-                        adjuntosHtml += `<a href="${API_URL}${a.url}" target="_blank" class="inline-flex items-center gap-1 text-xs text-blue-400 underline mr-3 hover:text-blue-300"><i class="fa-solid fa-paperclip"></i> ${a.nombre}</a>`;
-                    });
-                    adjuntosHtml += `</div>`;
-                }
-
-                container.innerHTML += `
-                    <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-700 space-y-2">
-                        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-                            <span class="font-bold text-blue-400 text-sm">Prueba #${h.numero_intento} - ${h.resultado_estado}</span>
-                            <span class="text-xs text-slate-400">${new Date(h.fecha_registro).toLocaleString()}</span>
-                        </div>
-                        <p class="text-xs text-slate-300"><strong class="text-slate-400">Probado por:</strong> ${h.probado_por}</p>
-                        ${h.observacion_error ? `<p class="text-xs text-amber-300/90"><strong class="text-slate-400">Error:</strong> ${h.observacion_error}</p>` : ''}
-                        ${h.devolucion_tango ? `<p class="text-xs text-emerald-300/90"><strong class="text-slate-400">Devolución Tango:</strong> ${h.devolucion_tango}</p>` : ''}
-                        ${adjuntosHtml}
-                    </div>
-                `;
-            });
-
-            document.getElementById('modalHistorial').classList.remove('hidden');
         }
 
         async function inicializarCatalogos() {
@@ -686,35 +580,81 @@
                 selResp.innerHTML += `<option value="${u.id}">${u.nombre_completo} (${u.rol})</option>`;
                 filResp.innerHTML += `<option value="${u.id}">${u.nombre_completo}</option>`;
             });
-
-            if (currentUser.rol !== 'ADMIN') {
-                const myUserObj = usuarios.find(u => u.email === currentUser.email);
-                if (myUserObj) selResp.value = myUserObj.id;
-                selResp.disabled = true;
-                selResp.classList.add('opacity-60', 'cursor-not-allowed');
-            } else {
-                selResp.disabled = false;
-                selResp.classList.remove('opacity-60', 'cursor-not-allowed');
-            }
         }
 
-        function cerrarModal() { document.getElementById('modalHistorial').classList.add('hidden'); }
-        
+        document.getElementById('pruebaForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const selMod = document.getElementById('selectModulo');
+            const modId = parseInt(selMod.value);
+            const sectorNom = selMod.options[selMod.selectedIndex].getAttribute('data-nombre');
+
+            const formData = new FormData();
+            formData.append('modulo_id', modId);
+            formData.append('sector_nombre', sectorNom);
+            formData.append('proceso_nombre', document.getElementById('inputProcesoNombre').value.trim());
+            formData.append('empleado_asignado_id', document.getElementById('selectResponsable').value);
+            formData.append('fase', document.getElementById('fase').value);
+            formData.append('resultado_estado', document.getElementById('resultadoEstado').value);
+            formData.append('fecha_inicio', document.getElementById('fechaInicio').value);
+            if (document.getElementById('fechaFin').value) formData.append('fecha_fin', document.getElementById('fechaFin').value);
+            if (document.getElementById('observacion').value) formData.append('observacion_error', document.getElementById('observacion').value);
+
+            const fileInput = document.getElementById('archivoEvidencia');
+            if (fileInput.files.length > 0) formData.append('archivo_evidencia', fileInput.files[0]);
+
+            const res = await fetch(`${API_URL}/pruebas/registrar-form`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${currentUser.access_token}` },
+                body: formData
+            });
+
+            if (res.ok) {
+                alert("¡Tarea registrada exitosamente en el primer intento!");
+                document.getElementById('pruebaForm').reset();
+                await cargarHistorico();
+            } else {
+                alert("Error al registrar la prueba");
+            }
+        });
+
+        document.getElementById('formCrearModulo').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const modNombre = document.getElementById('newModuloNombre').value.trim();
+
+            const res = await fetch(`${API_URL}/admin/modulos`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${currentUser.access_token}`
+                },
+                body: JSON.stringify({ nombre: modNombre })
+            });
+
+            if (res.ok) {
+                alert(`Módulo '${modNombre}' guardado correctamente`);
+                document.getElementById('newModuloNombre').value = '';
+                await inicializarCatalogos();
+            } else {
+                alert("Error al guardar módulo");
+            }
+        });
+
         document.getElementById('btnLogout').addEventListener('click', () => {
             currentUser = null;
             localStorage.removeItem('tango_user_session');
-            document.getElementById('dashboardView').classList.add('hidden');
-            document.getElementById('loginView').classList.remove('hidden');
-            document.getElementById('loginPassword').value = '';
-            document.getElementById('loginEmail').value = '';
+            location.reload();
         });
 
-        document.getElementById('btnRefresh').addEventListener('click', () => {
-            document.getElementById('filtroModulo').value = 'TODOS';
-            document.getElementById('filtroEstado').value = 'TODOS';
-            document.getElementById('filtroResponsable').value = 'TODOS';
-            cargarHistorico();
-            cargarNotificacionesPendientes();
+        window.addEventListener('DOMContentLoaded', () => {
+            const sessionData = localStorage.getItem('tango_user_session');
+            if (sessionData) {
+                try {
+                    currentUser = JSON.parse(sessionData);
+                    iniciarDashboard();
+                } catch (e) {
+                    localStorage.removeItem('tango_user_session');
+                }
+            }
         });
     </script>
 </body>

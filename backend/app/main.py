@@ -15,18 +15,18 @@ from app.models import DBUser, DBModulo, DBProceso, DBEjecucionPrueba, DBHistori
 from app.schemas import UserCreate, UserResponse, LoginResponse, ModuloCreate
 from app.auth import hash_password, verify_password, create_access_token, get_current_user, require_admin
 
-# Inicialización de Tablas
+# Inicialización de Tablas de BD
 Base.metadata.create_all(bind=engine)
 
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 app = FastAPI(
-    title="Sistema de Pruebas Tango ERP - Production V8", 
-    version="8.0.0"
+    title="Sistema de Pruebas Tango ERP - Enterprise Production V9", 
+    version="9.0.0"
 )
 
-# CORS
+# Middleware CORS para acceso desde cPanel / dominios cruzados
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -50,6 +50,49 @@ async def add_cors_headers(request: Request, call_next):
 
 app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
+# ==============================================================================
+# LISTA MAESTRA DE USUARIOS RAÍZ (SEED DATA)
+# ==============================================================================
+USUARIOS_PREDEFINIDOS = [
+    # Administradores
+    {"nombre": "Sistemas Flecha Log", "email": "sistemas@flechalog.com", "pass": "Admin2626!@", "rol": "ADMIN"},
+    {"nombre": "Néstor Dova", "email": "ndova@flechalog.com", "pass": "Ndov1-", "rol": "ADMIN"},
+    {"nombre": "Roxana Rosales", "email": "rrosales@flechalog.com", "pass": "Rros8-", "rol": "ADMIN"},
+    {"nombre": "Soraya Bartolozzi", "email": "sbartolozzi@flechalog.com", "pass": "Sbart-6", "rol": "ADMIN"},
+    {"nombre": "Belen Barbieri", "email": "bbarbieri@flechalog.com", "pass": "Bbarb-14", "rol": "ADMIN"},
+    {"nombre": "Rodolfo Martinez", "email": "rmartinez@flechalog.com", "pass": "Rmart-80", "rol": "ADMIN"},
+    {"nombre": "Gladys Coello", "email": "gcoello@flechainternationalgroup.com", "pass": "Gcoell-74", "rol": "ADMIN"},
+    {"nombre": "Diego Bartolozzi", "email": "dbartolozzi@flechalog.com", "pass": "Dbart-58", "rol": "ADMIN"},
+    {"nombre": "Antonio Fedele", "email": "afedele@flechalog.com", "pass": "Afede-88", "rol": "ADMIN"},
+    # Colaboradores
+    {"nombre": "Diego Bartolozzi (Colaborador Prueba)", "email": "dbartolozzi_test@flechalog.com", "pass": "Diego123", "rol": "COLABORADOR"},
+    {"nombre": "Celeste Iberra", "email": "ciberra@flechalog.com", "pass": "Cib-5983", "rol": "COLABORADOR"}
+]
+
+def poblar_usuarios_maestros(db: Session):
+    for u in USUARIOS_PREDEFINIDOS:
+        email_clean = u["email"].strip().lower()
+        user_db = db.query(DBUser).filter(DBUser.email == email_clean).first()
+        
+        if not user_db:
+            nuevo = DBUser(
+                email=email_clean,
+                password_hash=hash_password(u["pass"]),
+                nombre_completo=u["nombre"],
+                rol=u["rol"],
+                activo=True
+            )
+            db.add(nuevo)
+        else:
+            # Actualizar contraseña y asegurar activación
+            user_db.password_hash = hash_password(u["pass"])
+            user_db.nombre_completo = u["nombre"]
+            user_db.rol = u["rol"]
+            user_db.activo = True
+            
+    db.commit()
+    print("✅ Todos los usuarios predefinidos han sido verificados/sincronizados.")
+
 def registrar_auditoria(db: Session, usuario: DBUser, accion: str, detalle: str):
     try:
         log = DBAuditLog(
@@ -61,33 +104,35 @@ def registrar_auditoria(db: Session, usuario: DBUser, accion: str, detalle: str)
         db.add(log)
         db.commit()
     except Exception as e:
-        print(f"Error registrando auditoria: {e}")
+        print(f"Error en auditoria: {e}")
 
+# EVENTO STARTUP: Se ejecuta automáticamente cada vez que la API arranca en Render
 @app.on_event("startup")
 def startup_event():
     migrar_datos_desde_sqlite_si_aplica()
     try:
         db = next(get_db())
-        email_clean = "sistemas@flechalog.com"
-        admin = db.query(DBUser).filter(DBUser.email == email_clean).first()
-        if not admin:
-            nuevo_admin = DBUser(
-                email=email_clean,
-                password_hash=hash_password("Admin2626!@"),
-                nombre_completo="Sistemas Flecha Log",
-                rol="ADMIN",
-                activo=True
-            )
-            db.add(nuevo_admin)
-            db.commit()
-            db.refresh(nuevo_admin)
-            print("✅ Administrador inicial listo: sistemas@flechalog.com")
+        poblar_usuarios_maestros(db)
     except Exception as e:
-        print(f"⚠️ Error inicializando base de datos: {e}")
+        print(f"⚠️ Error cargando usuarios maestros en startup: {e}")
+
+# ==============================================================================
+# ENDPOINTS REST API
+# ==============================================================================
 
 @app.get("/health", tags=["Health"])
 def health_check():
-    return {"status": "ok", "version": "8.0.0"}
+    return {"status": "ok", "version": "9.0.0", "service": "Pruebas Tango ERP Backend"}
+
+# ENDPOINT DE EMERGENCIA PARA FORZAR LA SINCRONIZACIÓN DE TODOS LOS USUARIOS
+@app.get("/admin/seed-users", tags=["Administración"])
+def seed_users_endpoint(db: Session = Depends(get_db)):
+    poblar_usuarios_maestros(db)
+    return {
+        "status": "ok", 
+        "mensaje": "Todos los usuarios administradores y colaboradores fueron sincronizados correctamente con sus contraseñas requeridas.",
+        "total_usuarios": len(USUARIOS_PREDEFINIDOS)
+    }
 
 # LOGIN
 @app.post("/token", response_model=LoginResponse, tags=["Autenticación"])
@@ -99,7 +144,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
         raise HTTPException(status_code=400, detail="Credenciales incorrectas")
     
     if not user.activo:
-        raise HTTPException(status_code=403, detail="Usuario desactivado")
+        raise HTTPException(status_code=403, detail="Usuario desactivado. Contacte a Sistemas.")
 
     registrar_auditoria(db, user, "LOGIN", "Inicio de sesión exitoso")
 
@@ -112,7 +157,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
         "email": user.email
     }
 
-# CREAR USUARIO
+# CREAR USUARIOS MANUALMENTE DESDE EL FRONTEND
 @app.post("/admin/usuarios", response_model=UserResponse, tags=["Administración"])
 def crear_usuario(usuario: UserCreate, db: Session = Depends(get_db), admin: DBUser = Depends(require_admin)):
     email_clean = usuario.email.strip().lower()
